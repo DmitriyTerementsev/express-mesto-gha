@@ -13,15 +13,17 @@ module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        return res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+        res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+      } else {
+        res.status(200).send(user);
       }
-      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -45,15 +47,17 @@ module.exports.changeInfo = (req, res) => {
   )
     .then((user) => {
       if (!user) {
-        return res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+        res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+      } else {
+        res.status(200).send(user);
       }
-      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -69,14 +73,16 @@ module.exports.changeAvatar = (req, res) => {
   )
     .then((user) => {
       if (!user) {
-        return res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+        res.status(notFound).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
+      } else {
+        res.status(200).send(user);
       }
-      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };

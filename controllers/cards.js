@@ -17,9 +17,10 @@ module.exports.createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -27,15 +28,17 @@ module.exports.deleteCardById = (req, res) => {
   Card.findByIdAndDelete(req.params.cardId)
     .then((card) => {
       if (!card) {
-        return res.status(notFound).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+        res.status(notFound).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+      } else {
+        res.status(200).send(card);
       }
-      return res.status(200).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -53,9 +56,10 @@ module.exports.likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -67,14 +71,16 @@ module.exports.dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        return res.status(notFound).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+        res.status(notFound).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+      } else {
+        res.status(200).send(card);
       }
-      return res.status(200).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(badRequest).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+      } else {
+        res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
       }
-      return res.status(internalServerError).send({ message: 'Произошла ошибка на сервере' });
     });
 };
