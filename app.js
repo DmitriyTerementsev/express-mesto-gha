@@ -11,25 +11,22 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/users', routerUsers);
-app.use('/cards', routerCards);
-
 app.use((req, res, next) => {
   req.user = {
-    _id: '6520965142e27e8b6d01713c',
+    _id: '6521bea8d640d437b59db9b1',
   };
 
   next();
 });
 
-async function init() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
-  console.log('DataBase Connect');
+app.use('/users', routerUsers);
+app.use('/cards', routerCards);
 
-  app.listen(PORT);
-  console.log(`Server listen on port ${PORT}`);
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+  useNewUrlParser: true,
+});
 
-  console.log(`Ссылка на сервер ${MONGO_URL}`);
-}
+app.listen(PORT);
+console.log(`Server listen on port ${PORT}`);
 
-init();
+console.log(`Ссылка на сервер ${MONGO_URL}`);
