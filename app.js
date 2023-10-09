@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
 });
 
