@@ -31,6 +31,12 @@ module.exports.deleteCardById = (req, res) => {
       }
     })
     .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Произошла ошибка при удалении карточки',
+        });
+        return;
+      }
       if (err.name === 'NotFoundError') {
         res.status(404).send({
           message: 'Произошла ошибка при удалении карточки',
@@ -59,6 +65,12 @@ module.exports.likeCard = (req, res) => {
       }
     })
     .catch((err) => {
+      if (err.name === 'NotFoundError') {
+        res.status(404).send({
+          message: 'Произошла ошибка при установке лайка',
+        });
+        return;
+      }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({
           message: 'Произошла ошибка при установке лайка',
