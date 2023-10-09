@@ -39,7 +39,8 @@ module.exports.changeInfo = (req, res) => {
     { name, about },
     {
       new: true,
-      upsert: true,
+      upsert: false,
+      runValidators: true,
     },
   )
     .then((user) => {
@@ -51,10 +52,11 @@ module.exports.changeInfo = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
-      } else {
-        res.status(400).send({ message: 'Произошла ошибка на сервере' });
+        return res.status(400).send({
+          message: 'Произошла ошибка: Данные переданы некорректно',
+        });
       }
+      return res.status(500).send({ message: 'Произошла ошибка на сервере' });
     });
 };
 
@@ -65,7 +67,8 @@ module.exports.changeAvatar = (req, res) => {
     { avatar },
     {
       new: true,
-      upsert: true,
+      upsert: false,
+      runValidators: true,
     },
   )
     .then((user) => {
