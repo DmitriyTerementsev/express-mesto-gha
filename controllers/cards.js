@@ -15,10 +15,14 @@ module.exports.createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка на сервере' });
+        res.status(400).send({
+          message: 'Произошла ошибка при создании карточки',
+        });
+        return;
       }
+      res.status(500).send({
+        message: 'Произошла ошибка на сервере',
+      });
     });
 };
 
@@ -26,17 +30,29 @@ module.exports.deleteCardById = (req, res) => {
   Card.findByIdAndDelete(req.params.cardId)
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+        res
+          .status(404)
+          .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
         res.status(201).send(card);
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка на сервере' });
+      if (err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Произошла ошибка при удалении карточки',
+        });
+        return;
       }
+      if (err.name === 'NotFoundError' || err.name === 'CastError') {
+        res.status(404).send({
+          message: 'Произошла ошибка при удалении карточки',
+        });
+        return;
+      }
+      res.status(500).send({
+        message: 'Произошла ошибка на сервере',
+      });
     });
 };
 
@@ -48,16 +64,28 @@ module.exports.likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        return res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+        return res
+          .status(404)
+          .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       }
       return res.status(201).send(card);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка на сервере' });
+      if (err.name === 'NotFoundError') {
+        res.status(404).send({
+          message: 'Произошла ошибка при установке лайка',
+        });
+        return;
       }
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Произошла ошибка при установке лайка',
+        });
+        return;
+      }
+      res.status(500).send({
+        message: 'Произошла ошибка на сервере',
+      });
     });
 };
 
@@ -69,16 +97,28 @@ module.exports.dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+        res
+          .status(404)
+          .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
         res.status(201).send(card);
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
-      } else {
-        res.status(500).send({ message: 'Произошла ошибка на сервере' });
+      if (err.name === 'NotFoundError') {
+        res.status(404).send({
+          message: 'Произошла ошибка при удалении лайка',
+        });
+        return;
       }
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
+        res.status(400).send({
+          message: 'Произошла ошибка при удалении лайка',
+        });
+        return;
+      }
+      res.status(500).send({
+        message: 'Произошла ошибка на сервере',
+      });
     });
 };
