@@ -15,14 +15,10 @@ module.exports.createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({
-          message: 'Произошла ошибка при создании карточки',
-        });
-        return;
+        res.status(400).send({ message: 'Произошла ошибка: Переданы некорректные данные' });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
-      res.status(500).send({
-        message: 'Произошла ошибка на сервере',
-      });
     });
 };
 
