@@ -11,7 +11,7 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => {
-      res.status(201).send(card);
+      res.status(201).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -34,7 +34,7 @@ module.exports.deleteCardById = (req, res) => {
           .status(404)
           .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
-        res.status(201).send(card);
+        res.status(201).send({ data: card });
       }
     })
     .catch((err) => {
@@ -68,7 +68,7 @@ module.exports.likeCard = (req, res) => {
           .status(404)
           .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       }
-      return res.status(201).send(card);
+      return res.status(201).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'NotFoundError') {
@@ -101,7 +101,7 @@ module.exports.dislikeCard = (req, res) => {
           .status(404)
           .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
-        res.status(201).send(card);
+        res.status(201).send({ data: card });
       }
     })
     .catch((err) => {
