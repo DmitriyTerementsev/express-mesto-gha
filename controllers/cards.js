@@ -3,7 +3,7 @@ const Card = require('../models/cards');
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((card) => res.status(200).send(card))
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка при получении всех карточек' }));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка при получении всех карточек' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -17,7 +17,7 @@ module.exports.createCard = (req, res) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
-        res.status(400).send({ message: 'Произошла ошибка на сервере' });
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
@@ -35,7 +35,7 @@ module.exports.deleteCardById = (req, res) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
-        res.status(400).send({ message: 'Произошла ошибка на сервере' });
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
@@ -56,7 +56,7 @@ module.exports.likeCard = (req, res) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
-        res.status(400).send({ message: 'Произошла ошибка на сервере' });
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
@@ -78,7 +78,7 @@ module.exports.dislikeCard = (req, res) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
-        res.status(400).send({ message: 'Произошла ошибка на сервере' });
+        res.status(500).send({ message: 'Произошла ошибка на сервере' });
       }
     });
 };
