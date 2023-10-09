@@ -14,7 +14,7 @@ module.exports.createCard = (req, res) => {
       res.status(201).send(card);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(500).send({ message: 'Произошла ошибка на сервере' });
@@ -28,11 +28,11 @@ module.exports.deleteCardById = (req, res) => {
       if (!card) {
         res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
-        res.status(200).send(card);
+        res.status(201).send(card);
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(500).send({ message: 'Произошла ошибка на сервере' });
@@ -50,10 +50,10 @@ module.exports.likeCard = (req, res) => {
       if (!card) {
         return res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       }
-      return res.status(200).send(card);
+      return res.status(201).send(card);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(500).send({ message: 'Произошла ошибка на сервере' });
@@ -71,11 +71,11 @@ module.exports.dislikeCard = (req, res) => {
       if (!card) {
         res.status(404).send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
       } else {
-        res.status(200).send(card);
+        res.status(201).send(card);
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(500).send({ message: 'Произошла ошибка на сервере' });
