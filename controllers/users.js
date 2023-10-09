@@ -10,20 +10,14 @@ module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .send({
-            message: 'Произошла ошибка: Пользователь с данным id не найден',
-          });
+        res.status(404).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res
-          .status(400)
-          .send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(400).send({ message: 'Произошла ошибка на сервере' });
       }
@@ -51,11 +45,7 @@ module.exports.changeInfo = (req, res) => {
   )
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .send({
-            message: 'Произошла ошибка: Пользователь с данным id не найден',
-          });
+        res.status(404).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
       } else {
         res.status(200).send(user);
       }
@@ -83,20 +73,14 @@ module.exports.changeAvatar = (req, res) => {
   )
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .send({
-            message: 'Произошла ошибка: Пользователь с данным id не найден',
-          });
+        res.status(404).send({ message: 'Произошла ошибка: Пользователь с данным id не найден' });
       } else {
         res.status(200).send(user);
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res
-          .status(400)
-          .send({ message: 'Произошла ошибка: Данные переданы некорректно' });
+        res.status(400).send({ message: 'Произошла ошибка: Данные переданы некорректно' });
       } else {
         res.status(400).send({ message: 'Произошла ошибка на сервере' });
       }
