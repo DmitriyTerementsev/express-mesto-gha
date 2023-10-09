@@ -8,12 +8,10 @@ module.exports.getCards = (req, res) => {
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
-  const owner = req.user._id;
-  Card.create({ name, link, owner })
+  Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
-      console.log({ name, link, owner });
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         res.status(400).send({ message: 'Произошла ошибка: Переданы некорректные данные' });
       } else {
         res.status(500).send({ message: 'Произошла ошибка на сервере' });
@@ -39,7 +37,7 @@ module.exports.deleteCardById = (req, res) => {
         });
         return;
       }
-      if (err.name === 'NotFoundError' || err.name === 'CastError') {
+      if (err.name === 'NotFoundError') {
         res.status(404).send({
           message: 'Произошла ошибка при удалении карточки',
         });
@@ -59,11 +57,12 @@ module.exports.likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        return res
+        res
           .status(404)
           .send({ message: 'Произошла ошибка: Карточка c этим id не найдена' });
+      } else {
+        res.send(card);
       }
-      return res.status(201).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'NotFoundError') {
