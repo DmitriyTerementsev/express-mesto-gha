@@ -8,6 +8,9 @@ const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
   req.user = {
     _id: '6521bea8d640d437b59db9b1',
@@ -21,8 +24,6 @@ app.use('/cards', routerCards);
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Not Found' });
 });
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
