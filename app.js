@@ -2,24 +2,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes');
+const { errors } = require('celebrate');
+const {
+  validateLogin,
+  validateUserName,
+} = require('./validator/validator');
+const { createUser, login } = require('./controllers/users');
+const InternalServerError = require('./middlewares/error');
 
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } =
   process.env;
 
 const app = express();
 
-const { createUser, login } = require('./controllers/users');
-const InternalServerError = require('./middlewares/error');
-const {
-  validateLogin,
-  validateUserName,
-} = require('./validator/validator');
-
-app.post('/signin', validateLogin, login);
-app.post('/signup', validateUserName ,createUser);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.post('/signin', validateLogin, login);
+app.post('/signup', validateUserName ,createUser);
 app.use(router);
+app.use(errors());
 app.use(InternalServerError);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
@@ -28,5 +29,4 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 
 app.listen(PORT);
 console.log(`Server listen on port ${PORT}`);
-
 console.log(`Ссылка на сервер ${MONGO_URL}`);
