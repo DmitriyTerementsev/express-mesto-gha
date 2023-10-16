@@ -10,7 +10,7 @@ module.exports.validateUrl = (url) => {
   throw new Error('Ссылка введена неверно');
 };
 
-module.exports.validateLogin = () => celebrate({
+module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string()
       .required()
@@ -49,7 +49,7 @@ module.exports.validateUser = celebrate({
   }),
 });
 
-module.exports.validateUserInfo = () => celebrate({
+module.exports.validateUserInfo = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       'string.empty': 'Это поле обязательное для заполнения',
@@ -64,7 +64,7 @@ module.exports.validateUserInfo = () => celebrate({
   }),
 });
 
-module.exports.validateAvatar = () =>  celebrate({
+module.exports.validateAvatar = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string()
       .required()
@@ -76,7 +76,7 @@ module.exports.validateAvatar = () =>  celebrate({
   }),
 });
 
-module.exports.validateCard = () => celebrate({
+module.exports.validateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       'string.min': 'Минимальное количество символов - 2',
@@ -93,20 +93,3 @@ module.exports.validateCard = () => celebrate({
   }),
 });
 
-module.exports.validateUserId = () => celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().length(24).required().messages({
-      'string.length': 'Фиксированное количество символов id - 24',
-      'string.empty': 'Это поле обязательное для заполнения',
-    }),
-  }),
-});
-
-module.exports.validateCardId = () => celebrate({
-  params: Joi.object().keys({
-    cardId: Joi.string().length(24).required().messages({
-      'string.length': 'Фиксированное количество символов id - 24',
-      'string.empty': 'Это поле обязательное для заполнения',
-    }),
-  }),
-});
