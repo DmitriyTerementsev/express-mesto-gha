@@ -159,7 +159,9 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
+        expiresIn: '7d',
+      });
       return res.send({ token });
     })
     .catch(next);
@@ -167,8 +169,10 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => { throw new NotFoundError('Произошла ошибка: Пользователь не найден'); })
-    .then((user) => res.send({ data: user }))
+    .orFail(() => {
+      throw new NotFoundError('Произошла ошибка: Пользователь не найден');
+    })
+    .then((user) => res.status(RES_OK).send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError('Переданы некорректные данные'));
@@ -179,11 +183,17 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => { throw new NotFoundError('Пользователь не найден'); })
+    .orFail(() => {
+      throw new NotFoundError('Пользователь не найден');
+    })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new ValidationError('Произошла ошибка: Переданы некорректные данные пользователя'));
+        return next(
+          new ValidationError(
+            'Произошла ошибка: Переданы некорректные данные пользователя'
+          )
+        );
       }
       return next(err);
     });
