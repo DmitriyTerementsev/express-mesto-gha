@@ -6,13 +6,6 @@ const router = require('./routes');
 
 const { errors } = require('celebrate');
 
-const {
-  validateLogin,
-  validateUser,
-} = require('./validator/validator');
-
-const { createUser, login } = require('./controllers/users');
-
 const auth = require('./middlewares/auth');
 const InternalServerError = require('./middlewares/error');
 
