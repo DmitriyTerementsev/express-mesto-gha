@@ -157,33 +157,12 @@ module.exports.changeAvatar = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  let userId;
-  User.findOne({ email })
-    .select('+password')
+
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      if (!user) {
-        return Promise.reject(
-          new UnauthorizedError('Произошла ошибка: Неверная почта или пароль')
-        );
-      }
-      userId = user._id;
-      return bcrypt.compare(password, user.password);
-    })
-    .then((matched) => {
-      if (!matched) {
-        return Promise.reject(
-          new UnauthorizedError('Произошла ошибка: Неверная почта или пароль')
-        );
-      }
-      const token = jwt.sign({ _id: userId }, 'some-secret-key', {
-        expiresIn: '7d',
-      });
-      return res
-        .cookie('jwt', token, {
-          maxAge: 604800000,
-          httpOnly: true,
-          sameSite: true,
-        })
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      return res.send({ token });
     })
     .catch(next);
 };
+
