@@ -8,7 +8,7 @@ const { errors } = require('celebrate');
 
 const {
   validateLogin,
-  validateUserName,
+  validateUser,
 } = require('./validator/validator');
 
 const { createUser, login } = require('./controllers/users');
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signin', validateLogin, login);
-app.post('/signup', validateUserName ,createUser);
+app.post('/signup', validateUser ,createUser);
 
 app.use(auth);
 

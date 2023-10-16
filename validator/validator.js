@@ -25,15 +25,15 @@ module.exports.validateLogin = () => celebrate({
   }),
 });
 
-module.exports.validateUserName = () => celebrate({
+module.exports.validateUser = () => celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).messages({
       'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не короче 30 символов',
+      'string.max': 'Текст должен быть не длиннее 30 символов',
     }),
     about: Joi.string().min(2).max(30).messages({
       'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не короче 30 символов',
+      'string.max': 'Текст должен быть не длиннее 30 символов',
     }),
     avatar: Joi.string().pattern(pattern).message('Введите URL'),
     email: Joi.string()
@@ -54,12 +54,12 @@ module.exports.validateUserInfo = () => celebrate({
     name: Joi.string().required().min(2).max(30).messages({
       'string.empty': 'Это поле обязательное для заполнения',
       'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не короче 30 символов',
+      'string.max': 'Текст должен быть не длиннее 30 символов',
     }),
     about: Joi.string().required().min(2).max(30).messages({
       'string.empty': 'Это поле обязательное для заполнения',
       'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не короче 30 символов',
+      'string.max': 'Текст должен быть не длиннее 30 символов',
     }),
   }),
 });
