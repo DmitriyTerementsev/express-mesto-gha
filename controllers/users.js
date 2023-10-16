@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
-const UnauthorizedError = require('../errors/UnathorizedError');
 const ConflictError = require('../errors/ConflictError');
 const { RES_OK } = require('../errors/GoodRequest');
 
@@ -140,7 +139,7 @@ module.exports.changeAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(
           new BadRequestError(
-            'ППроизошла ошибка: Переданы некорректные данные пользователя'
+            'Произошла ошибка: Переданы некорректные данные пользователя'
           )
         );
       } else if (err.name === 'CastError') {
@@ -166,3 +165,26 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => { throw new NotFoundError('Произошла ошибка: Пользователь не найден'); })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return next(new BadRequestError('Переданы некорректные данные'));
+      }
+      return next(err);
+    });
+};
+
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => { throw new NotFoundError('Пользователь не найден'); })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return next(new ValidationError('Произошла ошибка: Переданы некорректные данные пользователя'));
+      }
+      return next(err);
+    });
+};
