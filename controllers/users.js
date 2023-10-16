@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnathorizedError');
+const ConflictError = require('../errors/ConflictError');
 const { RES_OK } = require('../errors/GoodRequest');
 
 module.exports.getUsers = (req, res) => {
@@ -67,7 +68,7 @@ module.exports.createUser = (req, res) => {
       }
       if (err.code === 11000) {
         return next(
-          new BadRequestError(
+          new ConflictError(
             'Произошла ошибка: Такой пользователь уже существует'
           )
         );
