@@ -10,8 +10,8 @@ const {
 } = require('../validator/validator');
 
 routerUsers.get('/', getUsers);
-routerUsers.get('/:userId', validateUserId, getUserById);
 routerUsers.get('/me', getCurrentUser);
+routerUsers.get('/:userId', validateUserId, getUserById);
 routerUsers.patch('/me', validateUserInfo, changeInfo);
 routerUsers.patch('/me/avatar', validateAvatar ,changeAvatar);
 

@@ -172,25 +172,11 @@ module.exports.getCurrentUser = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Произошла ошибка: Пользователь не найден');
     })
-    .then((user) => res.status(RES_OK).send({ data: user }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы некорректные данные'));
-      }
-      return next(err);
-    });
-};
-
-module.exports.getCurrentUser = (req, res, next) => {
-  User.findById(req.user._id)
-    .orFail(() => {
-      throw new NotFoundError('Пользователь не найден');
-    })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(RES_OK).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(
-          new ValidationError(
+          new BadRequestError(
             'Произошла ошибка: Переданы некорректные данные пользователя'
           )
         );
