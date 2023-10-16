@@ -7,13 +7,13 @@ const UnauthorizedError = require('../errors/UnathorizedError');
 const ConflictError = require('../errors/ConflictError');
 const { RES_OK } = require('../errors/GoodRequest');
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((user) => res.status(RES_OK).send(user))
     .catch(next);
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
@@ -36,7 +36,7 @@ module.exports.getUserById = (req, res) => {
     });
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
@@ -77,7 +77,7 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-module.exports.changeInfo = (req, res) => {
+module.exports.changeInfo = (req, res, next) => {
   console.log(req.user._id);
   const { name, about } = req.body;
   User.findByIdAndUpdate(
@@ -117,7 +117,7 @@ module.exports.changeInfo = (req, res) => {
     });
 };
 
-module.exports.changeAvatar = (req, res) => {
+module.exports.changeAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
