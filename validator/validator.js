@@ -25,7 +25,7 @@ module.exports.validateLogin = () => celebrate({
   }),
 });
 
-module.exports.validateUser = () => celebrate({
+module.exports.validateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).messages({
       'string.min': 'Текст должен быть не короче 2 символов',
