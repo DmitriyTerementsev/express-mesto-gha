@@ -101,7 +101,7 @@ module.exports.changeInfo = (req, res) => {
       if (err.name === 'ValidationError') {
         next(
           new BadRequestError(
-            'роизошла ошибка: Переданы некорректные данные пользователя'
+            'Произошла ошибка: Переданы некорректные данные пользователя'
           )
         );
       } else if (err.name === 'CastError') {
@@ -137,10 +137,16 @@ module.exports.changeAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные'));
+        next(
+          new BadRequestError(
+            'ППроизошла ошибка: Переданы некорректные данные пользователя'
+          )
+        );
       } else if (err.name === 'CastError') {
         next(
-          new BadRequestError('При запросе пользователя id передан некорректно')
+          new BadRequestError(
+            'Произошла ошибка: Пользователь с данным id не найден'
+          )
         );
       } else {
         next(err);
@@ -150,10 +156,28 @@ module.exports.changeAvatar = (req, res) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  return User.findUserByCredentials(email, password)
+  let userId;
+
+  User.findOne({ email })
+    .select('+password')
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, KEY, { expiresIn: '7d' });
-      res.status(RES_OK).send({ token });
+      if (!user) {
+        return Promise.reject(
+          new UnauthorizedError('Произошла ошибка: Неверная почта или пароль')
+        );
+      }
+      userId = user._id;
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        return Promise.reject(
+          new UnauthorizedError('Произошла ошибка: Неверная почта или пароль')
+        );
+      }
+      const token = jwt.sign({ _id: userId }, 'some-secret-key', {
+        expiresIn: '7d',
+      });
     })
     .catch(next);
 };
