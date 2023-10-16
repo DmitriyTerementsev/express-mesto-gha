@@ -93,3 +93,20 @@ module.exports.validateCard = celebrate({
   }),
 });
 
+module.exports.validateUserId = celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().length(24).required().messages({
+      'string.length': 'Фиксированное количество символов id - 24',
+      'string.empty': 'Это поле обязательное для заполнения',
+    }),
+  }),
+});
+
+module.exports.validateCardId = celebrate({
+  params: Joi.object().keys({
+    cardId: Joi.string().length(24).required().messages({
+      'string.length': 'Фиксированное количество символов id - 24',
+      'string.empty': 'Это поле обязательное для заполнения',
+    }),
+  }),
+});
