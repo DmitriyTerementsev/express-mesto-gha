@@ -21,9 +21,8 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     required: [true, 'Поле должно быть заполнено'],
-    validate: {
-      validator: (url) => validator.isURL(url),
-      message: 'Введите URL',
+    valid: {
+      validator: validator.isUrl,
     },
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
@@ -31,9 +30,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validate: {
-      validator: (email) => validator.isEmail(email),
-      message: 'Неправильный формат почты',
+    valid: {
+      validator: validator.isEmail,
+      message: 'Неверный формат email',
     },
   },
   password: {
