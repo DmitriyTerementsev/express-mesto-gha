@@ -6,9 +6,9 @@ const NotFoundError = require('../errors/NotFoundError');
 const {
   validateLogin,
   validateUser,
-} = require('./validator/validator');
+} = require('../validator/validator');
 
-const { createUser, login } = require('./controllers/users');
+const { createUser, login } = require('../controllers/users');
 
 router.post('/signin', validateLogin, login);
 router.post('/signup', validateUser, createUser);
