@@ -1,7 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 
-const pattern =
-  /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+const pattern = /^(https?:\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/im;
 
 module.exports.validateUrl = (url) => {
   if (pattern.test(url)) {
@@ -51,16 +50,18 @@ module.exports.validateUser = celebrate({
 
 module.exports.validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30).messages({
-      'string.empty': 'Это поле обязательное для заполнения',
-      'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не длиннее 30 символов',
-    }),
-    about: Joi.string().required().min(2).max(30).messages({
-      'string.empty': 'Это поле обязательное для заполнения',
-      'string.min': 'Текст должен быть не короче 2 символов',
-      'string.max': 'Текст должен быть не длиннее 30 символов',
-    }),
+    name: Joi.string().required().min(2).max(30)
+      .messages({
+        'string.empty': 'Это поле обязательное для заполнения',
+        'string.min': 'Текст должен быть не короче 2 символов',
+        'string.max': 'Текст должен быть не длиннее 30 символов',
+      }),
+    about: Joi.string().required().min(2).max(30)
+      .messages({
+        'string.empty': 'Это поле обязательное для заполнения',
+        'string.min': 'Текст должен быть не короче 2 символов',
+        'string.max': 'Текст должен быть не длиннее 30 символов',
+      }),
   }),
 });
 
@@ -78,11 +79,12 @@ module.exports.validateAvatar = celebrate({
 
 module.exports.validateCard = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30).messages({
-      'string.min': 'Минимальное количество символов - 2',
-      'string.max': 'Максимальное количество символов - 30',
-      'string.empty': 'Это поле обязательное для заполнения',
-    }),
+    name: Joi.string().required().min(2).max(30)
+      .messages({
+        'string.min': 'Минимальное количество символов - 2',
+        'string.max': 'Максимальное количество символов - 30',
+        'string.empty': 'Это поле обязательное для заполнения',
+      }),
     link: Joi.string()
       .required()
       .pattern(pattern)
@@ -95,18 +97,20 @@ module.exports.validateCard = celebrate({
 
 module.exports.validateUserId = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().length(24).required().messages({
-      'string.length': 'Фиксированное количество символов id - 24',
-      'string.empty': 'Это поле обязательное для заполнения',
-    }),
+    userId: Joi.string().length(24).hex().required()
+      .messages({
+        'string.length': 'Фиксированное количество символов id - 24',
+        'string.empty': 'Это поле обязательное для заполнения',
+      }),
   }),
 });
 
 module.exports.validateCardId = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().length(24).required().messages({
-      'string.length': 'Фиксированное количество символов id - 24',
-      'string.empty': 'Это поле обязательное для заполнения',
-    }),
+    cardId: Joi.string().length(24).hex().required()
+      .messages({
+        'string.length': 'Фиксированное количество символов id - 24',
+        'string.empty': 'Это поле обязательное для заполнения',
+      }),
   }),
 });

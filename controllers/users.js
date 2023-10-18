@@ -1,10 +1,10 @@
-const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/users');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
-const { RES_OK } = require('../errors/GoodRequest');
+const { RES_OK, RES_CREATED } = require('../errors/GoodRequest');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -17,7 +17,7 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new NotFoundError(
-          'Произошла ошибка: Пользователь с данным id не найден'
+          'Произошла ошибка: Пользователь с данным id не найден',
         );
       }
       res.status(200).send(user);
@@ -26,8 +26,8 @@ module.exports.getUserById = (req, res, next) => {
       if (err.name === 'CastError') {
         next(
           new BadRequestError(
-            'Произошла ошибка: Пользователь с данным id не найден'
-          )
+            'Произошла ошибка: Пользователь с данным id не найден',
+          ),
         );
         return;
       }
@@ -36,20 +36,20 @@ module.exports.getUserById = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        about,
-        avatar,
-        email,
-        password: hash,
-      })
-    )
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
     .then((user) => {
-      res.status(RES_OK).send({
+      res.status(RES_CREATED).send({
         name: user.name,
         about: user.about,
         avatar: user.avatar,
@@ -61,15 +61,15 @@ module.exports.createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(
           new BadRequestError(
-            'Произошла ошибка: Переданы некорректные данные пользователя'
-          )
+            'Произошла ошибка: Переданы некорректные данные пользователя',
+          ),
         );
       }
       if (err.code === 11000) {
         return next(
           new ConflictError(
-            'Произошла ошибка: Такой пользователь уже существует'
-          )
+            'Произошла ошибка: Такой пользователь уже существует',
+          ),
         );
       }
       return next(err);
@@ -86,12 +86,12 @@ module.exports.changeInfo = (req, res, next) => {
       new: true,
       upsert: false,
       runValidators: true,
-    }
+    },
   )
     .then((user) => {
       if (!user) {
         throw new NotFoundError(
-          'Произошла ошибка: Пользователь с данным id не найден'
+          'Произошла ошибка: Пользователь с данным id не найден',
         );
       } else {
         res.status(200).send(user);
@@ -101,14 +101,14 @@ module.exports.changeInfo = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(
           new BadRequestError(
-            'Произошла ошибка: Переданы некорректные данные пользователя'
-          )
+            'Произошла ошибка: Переданы некорректные данные пользователя',
+          ),
         );
       } else if (err.name === 'CastError') {
         next(
           new BadRequestError(
-            'Произошла ошибка: Пользователь с данным id не найден'
-          )
+            'Произошла ошибка: Пользователь с данным id не найден',
+          ),
         );
       } else {
         next(err);
@@ -125,12 +125,12 @@ module.exports.changeAvatar = (req, res, next) => {
       new: true,
       upsert: false,
       runValidators: true,
-    }
+    },
   )
     .then((user) => {
       if (!user) {
         throw new NotFoundError(
-          'Произошла ошибка: Пользователь с данным id не найден'
+          'Произошла ошибка: Пользователь с данным id не найден',
         );
       }
       res.status(RES_OK).send(user);
@@ -139,14 +139,14 @@ module.exports.changeAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(
           new BadRequestError(
-            'Произошла ошибка: Переданы некорректные данные пользователя'
-          )
+            'Произошла ошибка: Переданы некорректные данные пользователя',
+          ),
         );
       } else if (err.name === 'CastError') {
         next(
           new BadRequestError(
-            'Произошла ошибка: Пользователь с данным id не найден'
-          )
+            'Произошла ошибка: Пользователь с данным id не найден',
+          ),
         );
       } else {
         next(err);
@@ -177,8 +177,8 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (err.name === 'CastError') {
         return next(
           new BadRequestError(
-            'Произошла ошибка: Переданы некорректные данные пользователя'
-          )
+            'Произошла ошибка: Переданы некорректные данные пользователя',
+          ),
         );
       }
       return next(err);

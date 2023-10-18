@@ -13,6 +13,6 @@ routerUsers.get('/', getUsers);
 routerUsers.get('/me', getCurrentUser);
 routerUsers.get('/:userId', validateUserId, getUserById);
 routerUsers.patch('/me', validateUserInfo, changeInfo);
-routerUsers.patch('/me/avatar', validateAvatar ,changeAvatar);
+routerUsers.patch('/me/avatar', validateAvatar, changeAvatar);
 
 module.exports = routerUsers;

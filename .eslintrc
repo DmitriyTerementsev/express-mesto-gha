@@ -4,5 +4,5 @@
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "no-console": "off"
   },
-  "eslint import/no-extraneous-dependencies": ["error", {"devDependencies": false}]
+  "import/no-extraneous-dependencies": ["error", {"devDependencies": false, "optionalDependencies": false, "peerDependencies": false}]
 }

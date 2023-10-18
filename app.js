@@ -1,22 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
-const router = require('./routes');
+const helmet = require('helmet');
 
 const { errors } = require('celebrate');
+const router = require('./routes');
 
-const auth = require('./middlewares/auth');
 const InternalServerError = require('./middlewares/error');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } =
-  process.env;
+const { PORT = 3000, MONGO_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(helmet());
 app.use(router);
 
 app.use(errors());
